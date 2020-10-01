@@ -2,36 +2,68 @@ import React, { useEffect, useState } from "react";
 import "./App.css";
 import Post from "./Post";
 import { db } from "./firebase";
+import { makeStyles } from "@material-ui/core/styles";
+import Modal from "@material-ui/core/Modal";
+
+function getModalStyle() {
+  const top = 50;
+  const left = 50;
+
+  return {
+    top: `${top}%`,
+    left: `${left}%`,
+    transform: `translate(-${top}%, -${left}%)`
+  };
+}
+
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    position: "absolute",
+    width: 400,
+    backgroundColor: theme.palette.background.paper,
+    border: "2px solid #000",
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3)
+  }
+}));
 
 function App() {
+  const classes = useStyles();
   const [posts, setPosts] = useState([
     {
-      userName: "Stephen",
-      Caption: "Hello React world !!",
+      username: "Stephen",
+      caption: "Hello React world !!",
       imageUrl:
         "https://mildaintrainings.com/wp-content/uploads/2017/11/react-logo.png"
     },
     {
-      userName: "Satiz",
-      Caption: "Hello world !!",
+      username: "Satiz",
+      caption: "Hello world !!",
       imageUrl: "https://etimg.etb2bimg.com/photo/57203645.cms"
     },
     {
-      userName: "Ragul",
-      Caption: "React world !!",
+      username: "Ragul",
+      caption: "React world !!",
       imageUrl:
         "https://images.unsplash.com/photo-1542362567-b07e54358753?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80"
     }
   ]);
 
+  const [open, setOpen] = useState(false);
+
   useEffect(() => {
     db.collection("posts").onSnapshot((snapshot) => {
-      setPosts(snapshot.docs.map((doc) => doc.data()));
+      setPosts(snapshot.docs.map((doc) => ({ id: doc.id, posts: doc.data() })));
     });
   }, []);
 
   return (
     <div className="app">
+      <Modal open={open} onClose={() => setOpen(false)}>
+        <div style={getModalStyle} className={classes.paper}>
+          <h2>Text in a modal</h2>
+        </div>
+      </Modal>
       <div className="app__header">
         <img
           className="app__headerImage"
@@ -39,12 +71,12 @@ function App() {
           alt=""
         />
       </div>
-      {posts.map((post, key) => (
+      {posts.map(({ id, post }) => (
         <Post
-          key={key}
-          userName={post.userName}
-          Caption={post.Caption}
-          imageUrl={post.imageUrl}
+          key={id}
+          username={posts.username}
+          caption={posts.caption}
+          imageUrl={posts.imageUrl}
         />
       ))}
     </div>
