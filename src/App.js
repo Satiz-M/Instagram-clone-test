@@ -29,38 +29,39 @@ const useStyles = makeStyles((theme) => ({
 
 function App() {
   const classes = useStyles();
+  const [modalStyle] = useState(getModalStyle);
   const [posts, setPosts] = useState([
-    {
-      username: "Stephen",
-      caption: "Hello React world !!",
-      imageUrl:
-        "https://mildaintrainings.com/wp-content/uploads/2017/11/react-logo.png"
-    },
-    {
-      username: "Satiz",
-      caption: "Hello world !!",
-      imageUrl: "https://etimg.etb2bimg.com/photo/57203645.cms"
-    },
-    {
-      username: "Ragul",
-      caption: "React world !!",
-      imageUrl:
-        "https://images.unsplash.com/photo-1542362567-b07e54358753?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80"
-    }
+    // {
+    //   username: "Stephen",
+    //   caption: "Hello React world !!",
+    //   imageUrl:
+    //     "https://mildaintrainings.com/wp-content/uploads/2017/11/react-logo.png"
+    // },
+    // {
+    //   username: "Satiz",
+    //   caption: "Hello world !!",
+    //   imageUrl: "https://etimg.etb2bimg.com/photo/57203645.cms"
+    // },
+    // {
+    //   username: "Ragul",
+    //   caption: "React world !!",
+    //   imageUrl:
+    //     "https://images.unsplash.com/photo-1542362567-b07e54358753?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80"
+    // }
   ]);
 
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
     db.collection("posts").onSnapshot((snapshot) => {
-      setPosts(snapshot.docs.map((doc) => ({ id: doc.id, posts: doc.data() })));
+      setPosts(snapshot.docs.map((doc) => ({ id: doc.id, post: doc.data() })));
     });
   }, []);
 
   return (
     <div className="app">
       <Modal open={open} onClose={() => setOpen(false)}>
-        <div style={getModalStyle} className={classes.paper}>
+        <div style={modalStyle} className={classes.paper}>
           <h2>Text in a modal</h2>
         </div>
       </Modal>
@@ -74,9 +75,9 @@ function App() {
       {posts.map(({ id, post }) => (
         <Post
           key={id}
-          username={posts.username}
-          caption={posts.caption}
-          imageUrl={posts.imageUrl}
+          username={post.username}
+          caption={post.caption}
+          imageUrl={post.imageUrl}
         />
       ))}
     </div>
