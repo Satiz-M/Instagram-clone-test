@@ -14,6 +14,7 @@ function ImageUpload({ username }) {
   };
 
   const handleUpload = (e) => {
+    e.preventDefault();
     const uploadTask = storage.ref(`images/$(image.name)`).put(image);
     uploadTask.on(
       "state_changed",
