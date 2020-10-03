@@ -167,12 +167,12 @@ function App() {
           </div>
         )}
       </div>
-
       <div className="app__posts">
         <div className="app__postsLeft">
           {posts.map(({ id, post }) => (
             <Post
               key={id}
+              postId={id}
               username={post.username}
               caption={post.caption}
               imageUrl={post.imageUrl}
