@@ -14,8 +14,8 @@ function ImageUpload({ username }) {
   };
 
   const handleUpload = (e) => {
-    const UploadTask = storage.ref(`images/$(image.name)`).put(image);
-    UploadTask.on(
+    const uploadTask = storage.ref(`images/$(image.name)`).put(image);
+    uploadTask.on(
       "state_changed",
       (snapshot) => {
         //progress function...
