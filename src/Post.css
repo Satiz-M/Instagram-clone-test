@@ -35,6 +35,7 @@
   border: none;
   padding: 10px;
   border-top: 1px solid lightgray;
+  outline: none;
 }
 .post__button {
   flex: 0;
